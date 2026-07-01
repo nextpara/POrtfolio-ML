@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selected Works — Architectural Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Archifolio Design Tokens (Clean, Premium, Neutral-Dark Aesthetic) --- */
+        :root {
+            --bg-primary: #0d0e12;       /* Deep architectural obsidian */
+            --bg-secondary: #14161d;     /* Clean module card background */
+            --border-color: #222530;     /* Fine line dividers */
+            --text-main: #f3f4f6;        /* Bright ivory text */
+            --text-muted: #9ca3af;       /* Technical gray descriptors */
+            --accent-color: #c4a47c;     /* Refined structural champagne gold */
+            --font-stack: 'Plus Jakarta Sans', sans-serif;
+            --site-padding: 4%;
+            --cubic-bezier: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* --- Custom Minimalist Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--font-stack);
+            letter-spacing: -0.01em;
+        }
+
+        /* --- Navigation System --- */
+        .af-nav {
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: rgba(13, 14, 18, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem var(--site-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .studio-brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .studio-brand .dot {
+            color: var(--accent-color);
+        }
+
+        .nav-meta {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            position: relative;
+            padding: 0.25rem 0;
+            transition: color 0.3s var(--cubic-bezier);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-color);
+            transition: width 0.3s var(--cubic-bezier);
+        }
+
+        .nav-links a:hover::after, 
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        /* --- Main Layout Frame --- */
+        .portfolio-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 6rem var(--site-padding) 0 var(--site-padding);
+        }
+
+        .portfolio-header {
+            margin-bottom: 5rem;
+            max-width: 700px;
+        }
+
+        .arch-title {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+
+        .arch-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* --- Archifolio Modular Grid Layout --- */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem 2.5rem;
+        }
+
+        /* Project Card Modules */
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.4s var(--cubic-bezier), border-color 0.4s var(--cubic-bezier), box-shadow 0.4s var(--cubic-bezier);
+        }
+
+        .project-card:hover {
+            border-color: rgba(196, 164, 124, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card.spread-wide {
+            grid-column: span 2;
+        }
+
+        /* Image Presentation Window */
+        .card-media {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border-radius: 6px;
+            background-color: var(--bg-primary);
+            position: relative;
+        }
+
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--cubic-bezier);
+        }
+
+        .project-card:hover .card-media img {
+            transform: scale(1.025);
+        }
+
+        /* --- INTERACTIVE BEFORE/AFTER SLIDER ENGINE --- */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            border-radius: 6px;
+            background-color: var(--bg-primary);
+            user-select: none;
+            margin-bottom: 1.5rem;
+        }
+
+        /* The 'After' (Render) Image is the base layer */
+        .image-after {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* The 'Before' (3D Model) Image sits clipped on top */
+        .image-before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            width: 50%;
+        }
+
+        /* The invisible HTML range slider element spanning the card */
+        .comparison-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            opacity: 0;
+            cursor: ew-resize;
+            z-index: 10;
+        }
+
+        /* The actual visible structural split line bar */
+        .slider-bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: #ffffff;
+            z-index: 5;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* The physical circular knob button center handle */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: #0d0e12;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        /* --- Make Media Containers Full Bleed --- */
+        .slider-container, 
+        .card-media {
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            width: calc(100% + 3rem);
+            border-radius: 11px 11px 0 0;
+        }
+
+        /* Fix for the multi-slider card so the second slider doesn't overlap text */
+        .slider-container + .slider-container {
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0;
+        }
+
+        /* Ensure the flipbook iframe obeys the new edge constraints */
+        .flipbook-viewport {
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+
+        /* Badges indicating stages inside the card */
+        .badge {
+            position: absolute;
+            top: 1rem;
+            padding: 0.3rem 0.6rem;
+            background-color: rgba(13, 14, 18, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            z-index: 4;
+            pointer-events: none;
+        }
+        .badge.before-label { left: 1rem; color: var(--text-main); }
+        .badge.after-label { right: 1rem; color: var(--accent-color); }
+
+        /* --- Flipbook Viewport Window --- */
+        .flipbook-viewport {
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--border-color);
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .flipbook-viewport iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: none;
+        }
+
+        /* Precise Technical Metadata Bar Below Images */
+        .card-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .proj-id {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .proj-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .meta-right {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .meta-tag {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-weight: 500;
+            background-color: rgba(13, 14, 18, 0.3);
+            transition: border-color 0.3s var(--cubic-gradient), color 0.3s var(--cubic-bezier);
+        }
+
+        .project-card:hover .meta-tag {
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .meta-tag.active-interactive {
+            background-color: rgba(196, 164, 124, 0.08);
+            border-color: rgba(196, 164, 124, 0.4);
+            color: var(--accent-color);
+        }
+
+        .proj-summary {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-top: 1.25rem;
+            font-weight: 300;
+        }
+
+        /* --- New Behance Showcase Sector --- */
+        .behance-showcase {
+            max-width: 1600px;
+            margin: 8rem auto 0 auto;
+            border-top: 1px solid var(--border-color);
+            padding: 6rem var(--site-padding) 2rem var(--site-padding);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .behance-text h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .behance-text p {
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .behance-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s var(--cubic-bezier), color 0.3s var(--cubic-bezier), transform 0.3s var(--cubic-bezier);
+        }
+
+        .behance-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            transform: translateY(-2px);
+        }
+
+        .behance-btn svg {
+            fill: currentColor;
+            transition: transform 0.3s var(--cubic-bezier);
+        }
+
+        /* --- Archifolio Footer Layout --- */
+        .af-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 6rem var(--site-padding) 3rem var(--site-padding);
+            background-color: #090a0d;
+        }
+
+        .footer-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 4rem;
+        }
+
+        .footer-info h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-info p {
+            color: var(--text-muted);
+            max-width: 520px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .footer-contact .label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .email-link {
+            font-size: 1.75rem;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s var(--cubic-bezier), border-color 0.3s var(--cubic-bezier);
+        }
+
+        .email-link:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .footer-credits {
+            max-width: 1600px;
+            margin: 6rem auto 0 auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* --- Adaptations for Mobile viewports --- */
+        @media (max-width: 1024px) {
+            .arch-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .project-card.spread-wide {
+                grid-column: auto;
+            }
+            .behance-showcase {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+                margin-top: 5rem;
+                padding-top: 4rem;
+            }
+            .footer-grid {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .arch-title {
+                font-size: 2.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="af-nav">
+        <div class="nav-container">
+            <a href="#" class="studio-brand">Makouf <span class="dot">.</span>Lamia</a>
+            <div class="nav-meta">SELECTED WORKS </div>
+            <ul class="nav-links">
+                <li><a href="#work" class="active">Work</a></li>
+                <li><a href="#publications">Publications</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="portfolio-container">
+        
+        <header id="work" class="portfolio-header">
+            <h1 class="arch-title">Architecture & Visualisation</h1>
+            <p class="arch-subtitle">Interior and Exterior renders.</p>
+        </header>
+
+        <div class="arch-grid">
+            
+            <article class="project-card spread-wide">
+                <div class="slider-container">
+                    <span class="badge before-label">Render</span>
+                    <span class="badge after-label">3D Mesh Model</span>
+                    
+                    <img class="image-after" src="E:\PO\8 (1).jpg" alt="Final Rendering Stage">
+                    <img class="image-before" src="E:\PO\ChatGPT Image Jul 1, 2026, 10_36_34 AM.png" alt="Raw 3D Modeling Mesh Stage">
+                    
+                    <input type="range" min="0" max="100" value="50" class="comparison-slider">
+                    <div class="slider-bar"></div>
+                    <div class="slider-button">⟳</div>
+                </div>
+
+                <div class="slider-container">
+                    <span class="badge before-label">Render</span>
+                    <span class="badge after-label">3D Mesh Model</span>
+                    
+                    <img class="image-after" src="E:\PO\9.jpg" alt="Final Rendering Stage">
+                    <img class="image-before" src="E:\PO\ChatGPT Image Jul 1, 2026, 10_41_27 AM.png" alt="Raw 3D Modeling Mesh Stage">
+                    
+                    <input type="range" min="0" max="100" value="50" class="comparison-slider">
+                    <div class="slider-bar"></div>
+                    <div class="slider-button">⟳</div>
+                </div>
+
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">01</span>
+                        <h2 class="proj-title">Exterior Render of a residential block in Batna (Views A & B)</h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag active-interactive">Interactive Slider</span>
+                        <span class="meta-tag">Revit + Lumion + AI Tools</span>
+                    </div>
+                </div>
+                <p class="proj-summary">Drag the slider left and right to inspect the raw geometric structure of the residential block layout versus the final ambient material and travertine cladding.</p>
+            </article>
+
+            <article class="project-card spread-wide">
+                <div class="slider-container">
+                    <span class="badge before-label">Render</span>
+                    <span class="badge after-label">3D Mesh Model</span>
+                    
+                    <img class="image-after" src="E:\PO\8.jpg" alt="Final Rendering Stage">
+                    <img class="image-before" src="E:\PO\ChatGPT Image Jul 1, 2026, 11_24_05 AM.png" alt="Raw 3D Modeling Mesh Stage">
+                    
+                    <input type="range" min="0" max="100" value="50" class="comparison-slider">
+                    <div class="slider-bar"></div>
+                    <div class="slider-button">⟳</div>
+                </div>
+                
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">02</span>
+                        <h2 class="proj-title">Exterior Render of a residential house  in Batna </h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag active-interactive">Interactive Slider</span>
+                        <span class="meta-tag">Archicad + Lumion + AI Tool</span>
+                    </div>
+                </div>
+                <p class="proj-summary">Drag the slider left and right to inspect the raw geometric structure of the residential block layout versus the final ambient material and travertine cladding.</p>
+            </article>
+
+            <article class="project-card">
+                <div class="card-media">
+                    <img src="E:\PO\ChatGPT Image Jul 1, 2026, 12_07_00 PM.png" alt="Minimalist Materiality Study">
+                </div>
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">PRJ-03</span>
+                        <h2 class="proj-title">Minimalist living room in Algiers</h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag">Archicad</span>
+                        <span class="meta-tag">Interior</span>
+                    </div>
+                </div>
+                
+            </article>
+
+            <article class="project-card">
+                <div class="card-media">
+                    <img src="E:\PO\ChatGPT Image Jul 1, 2026, 11_55_42 AM.png" alt="Heritage Revival Modeling">
+                </div>
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">PRJ-04</span>
+                        <h2 class="proj-title">Modern interior kitchen in Algiers </h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag">Archicad /ai tool</span>
+                        <span class="meta-tag">Interior</span>
+                    </div>
+                </div>
+                
+            </article>
+            
+            <article class="project-card">
+                <div class="card-media">
+                    <img src="E:\PO\ChatGPT Image Jul 1, 2026, 12_08_58 PM.png" alt="Minimalist Materiality Study">
+                </div>
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">PRJ-05</span>
+                        <h2 class="proj-title">Minimalist Bathroom interior shot</h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag">Archicad</span>
+                        <span class="meta-tag">Interior</span>
+                    </div>
+                </div>
+                
+            </article>
+
+            <article class="project-card">
+                <div class="card-media">
+                    <img src="E:\PO\ChatGPT Image Jul 1, 2026, 11_58_24 AM.png" alt="Heritage Revival Modeling">
+                </div>
+                <div class="card-meta-bar">
+                    <div class="meta-left">
+                        <span class="proj-id">PRJ-06</span>
+                        <h2 class="proj-title">Interior of a modern kitchen </h2>
+                    </div>
+                    <div class="meta-right">
+                        <span class="meta-tag">Archicad  / ai tool </span>
+                        <span class="meta-tag">Interior</span>
+                    </div>
+                </div>
+                
+            </article>
+
+        </div>
+
+        <!-- --- BEHANCE LINK SHOWCASE SECTOR --- -->
+        <section class="behance-showcase">
+            <div class="behance-text">
+                <h2>My behance page </h2>
+                <p>Explore more about my activities.</p>
+            </div>
+            <div>
+                <a href="https://www.behance.net/lamiamak9c712" target="_blank" class="behance-btn">
+                    View Full Profile
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22 10h-6v1.5h6v-1.5zm-3.235 2.564c.101-.611-.274-1.164-.863-1.229-.684-.075-1.196.442-1.246 1.115-.028.375.25.751.636.832.613.129 1.365-.084 1.473-.718zm-7.469-1.921c.548.069.948.471.94 1.016-.008.571-.476.993-1.047.962h-1.634v-1.978h1.741zm.143 3.992c.621.053 1.132.483 1.114 1.144-.017.611-.539 1.066-1.171 1.021h-1.828v-2.165h1.885zm1.884-6.398c-2.457-.156-4.708 1.353-5.323 3.738-.598 2.316.592 4.792 2.802 5.642 2.651 1.019 5.86-.452 6.643-3.219.866-3.057-1.157-6.002-4.122-6.161zm-1.854 8.78h-3.32v-7.143h3.291c1.554.024 2.378.835 2.22 2.115-.125 1.011-.842 1.488-1.696 1.631.996.223 1.579.845 1.458 1.947-.146 1.319-1.06 1.442-1.953 1.45zm9.589-3.275c-.328-2.612-3.136-3.791-5.342-2.738-2.072.989-2.748 3.518-1.936 5.589.873 2.226 3.615 3.129 5.631 1.838 1.419-.909 1.916-2.457 1.716-4.041h-5.228c-.015.688.463 1.254 1.141 1.277.688.023 1.179-.328 1.291-.973h1.745c.012 1.748-1.355 3.062-3.041 3.012-1.611-.048-2.923-1.341-2.946-2.96-.024-1.704 1.261-3.084 2.955-3.12 1.485-.032 2.766.91 3.024 2.385l.025.731h.965z"/></svg>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="about" class="af-footer">
+        <div class="footer-grid">
+            <div class="footer-info">
+                <h3>Let's build together.</h3>
+                <p>Available for freelance 3d modeling , architectural visualization and rendering coordination.</p>
+            </div>
+            <div class="footer-contact">
+                <span class="label">Direct Inquiry</span>
+                <a href="mailto:lamiamak9@gmail.com" class="email-link">lamiamak9@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-credits">
+            <p>&copy; 2026 .</p>
+        </div>
+    </footer>
+
+    <script>
+        // Find every instance of a slider container on the page
+        const sliderContainers = document.querySelectorAll('.slider-container');
+
+        sliderContainers.forEach((container) => {
+            // Find target elements scoped strictly inside THIS specific container block
+            const slider = container.querySelector('.comparison-slider');
+            const beforeImage = container.querySelector('.image-before');
+            const dividerLine = container.querySelector('.slider-bar');
+            const handleKnob = container.querySelector('.slider-button');
+
+            // Attach individual input tracking
+            slider.addEventListener('input', (e) => {
+                const sliderValue = e.target.value;
+                
+                beforeImage.style.width = `${sliderValue}%`;
+                dividerLine.style.left = `${sliderValue}%`;
+                handleKnob.style.left = `${sliderValue}%`;
+            });
+        });
+    </script>
+
+</body>
+</html>
